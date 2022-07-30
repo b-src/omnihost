@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from os import PathLike
 
 
 class LineType(Enum):
@@ -34,7 +33,7 @@ class GemtextParser:
         self._parse_mode = ParseMode.DEFAULT
         self._STATE_TOGGLE_SYMBOL = "```"
 
-    def parse_file_to_gemlines(self, file_path: PathLike) -> list[GemLine]:
+    def parse_file_to_gemlines(self, file_path: str) -> list[GemLine]:
         self._parse_mode = ParseMode.DEFAULT
         gemlines: list[GemLine] = []
 
