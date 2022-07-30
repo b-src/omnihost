@@ -1,0 +1,25 @@
+# This is a basic gemtext markdown file for happy path testing
+with some plain text
+
+that should handle empty lines just fine
+
+## Test Subheading
+* list
+* of
+* items
+
+### Subsubheading
+```alt text
+with some preformatted text
+```
+```
+followed by a second block of preformatted text with no alt text
+second line
+```
+
+block quotes like so:
+> I am opposing a social order in which it is possible for one man who does absolutely nothing that is useful to amass a fortune of hundreds of millions of dollars, while millions of men and women who work all the days of their lives secure barely enough for a wretched existence.
+ - Eugene V. Debs
+
+Finally, a link
+=> https://github.com/b-src/omnihost                A link to this repo with a bunch of crazy whitespace in between
