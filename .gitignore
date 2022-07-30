@@ -1,1 +1,5 @@
+# venv
 .python-version
+
+# environment variables
+.env
