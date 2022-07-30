@@ -13,6 +13,7 @@ class LineType(Enum):
     BLOCKQUOTE = auto()
     PREFORMATTED = auto()
     PREFORMATTED_ALT_TEXT = auto()
+    END_PREFORMATTED = auto()
     UNINITIALIZED = auto()
 
 
@@ -57,7 +58,7 @@ class GemtextParser:
                         elif self._parse_mode == ParseMode.DEFAULT:
                             # proceed to the next line if this line closes the preformatted block
                             # text after the "```" will be ignored
-                            pass
+                            gemlines.append(GemLine(LineType.END_PREFORMATTED, ""))
                     else:
                         if self._parse_mode == ParseMode.PREFORMATTED:
                             gemlines.append(GemLine(LineType.PREFORMATTED, line))
