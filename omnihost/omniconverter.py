@@ -60,7 +60,10 @@ class OmniConverter:
                 gemlines = self._gemtext_parser.parse_file_to_gemlines(gemtext_file_path)
 
                 if self._convert_to_html:
-                    html = self._html_converter.convert_gemlines_to_html(gemlines)
+                    page_title = self._convert_filename_to_title(gemtext_file_path)
+                    html = self._html_converter.convert_gemlines_to_html(
+                        gemlines, page_title
+                    )
                     # TODO: fix file extension
                     with open(
                         os.path.join(self._html_output_dir, gemtext_file_path), mode="x"  # type: ignore
@@ -72,3 +75,13 @@ class OmniConverter:
 
         if self._copy_gemini_files:
             copytree(self._source_dir, self._gemini_output_dir)  # type: ignore
+
+    def _convert_filename_to_title(self, filename: str) -> str:
+        """Assuming a file format of 'file_name_lowercase_with_underscores.gmi',
+        convert to 'File Name Lowercase With Underscores'
+
+        requires only one '.' in filename
+        """
+        # TODO: this is really lazy and hard to read, split into something reasonable
+        # instead of a too-clever one-liner
+        return " ".join(word.capitalize() for word in filename.split(".")[0].split("_"))

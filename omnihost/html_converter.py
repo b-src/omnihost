@@ -15,9 +15,9 @@ class HTMLConverter:
     def __init__(self) -> None:
         self._state = HTMLConverterState.DEFAULT
 
-    def convert_gemlines_to_html(self, gemlines: list[GemLine]) -> str:
+    def convert_gemlines_to_html(self, gemlines: list[GemLine], title: str) -> str:
         self._state = HTMLConverterState.DEFAULT
-        html_output = ""
+        html_body = ""
         for gemline in gemlines:
             if self._state == HTMLConverterState.DEFAULT:
                 if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
@@ -28,24 +28,24 @@ class HTMLConverter:
 
                 elif gemline.line_type == LineType.LISTITEM:
                     self._state = HTMLConverterState.LIST
-                    html_output += f"<ul><li>{gemline.line_contents}</li>"
+                    html_body += f"<ul><li>{gemline.line_contents}</li>"
 
                 else:
                     self._convert_default_gemline_to_html
 
             elif self._state == HTMLConverterState.PREFORMATTED:
                 if gemline.line_type == LineType.PREFORMATTED:
-                    html_output += f"\n{gemline.line_contents}"
+                    html_body += f"\n{gemline.line_contents}"
 
                 elif gemline.line_type == LineType.END_PREFORMATTED:
                     self._state = HTMLConverterState.DEFAULT
-                    html_output += "</pre>"
+                    html_body += "</pre>"
 
             elif self._state == HTMLConverterState.LIST:
                 if gemline.line_type == LineType.LISTITEM:
-                    html_output += f"<li>{gemline.line_contents}</li>"
+                    html_body += f"<li>{gemline.line_contents}</li>"
                 else:
-                    html_output += "</ul>"
+                    html_body += "</ul>"
 
                     # the duplicate logic below could be eliminated if there was a
                     # separate END_LIST line in the gemline list
@@ -58,9 +58,11 @@ class HTMLConverter:
 
                     else:
                         self._state = HTMLConverterState.DEFAULT
-                        html_output += self._convert_default_gemline_to_html(gemline)
+                        html_body += self._convert_default_gemline_to_html(gemline)
 
-        return html_output
+        html_contents = self._add_page_content_to_html_template(title, html_body)
+
+        return html_contents
 
     def _start_preformatted_line(
         self, alt_text: Optional[str] = None, content: Optional[str] = None
@@ -117,3 +119,7 @@ class HTMLConverter:
         """Handle a variable amount of whitespace at the start of a quote line."""
         quote_content = gemline.line_contents.strip()
         return f"<p>&gt; {quote_content}</p>"
+
+    def _add_page_content_to_html_template(self, title: str, body: str) -> str:
+        return f"""<!DOCTYPE HTML><html><head><title>{title}</title></head>
+<body>{body}</body></html>"""
