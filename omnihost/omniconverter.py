@@ -41,17 +41,15 @@ class OmniConverter:
             self._convert_to_gopher = False
 
     def convert_gemini_files(self) -> None:
-        # Current limitations:
-        # - requires only gemtext files in source dir
-        # - all gemtext files must be in top level of source dir
-        if (
-            not self._convert_to_html
-            and not self._copy_gemini_files
-            and not self._convert_to_gopher
-        ):
-            # TODO: probably log and quit instead
-            raise Exception("Configured to do nothing.")
+        """Perform conversions based on provided arguments.
 
+        Current limitations:
+         - requires only gemtext files in source dir
+         - all gemtext files must be in top level of source dir
+
+        Arguments are checked initially to make sure there's at least one action to
+        perform at this point
+        """
         # No reason to parse gemtext files if we're only copying them somewhere
         if self._convert_to_html or self._convert_to_gopher:
             for gemtext_file_path in os.listdir(self._source_dir):

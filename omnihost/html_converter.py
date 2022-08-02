@@ -121,5 +121,7 @@ class HTMLConverter:
         return f"<p>&gt; {quote_content}</p>"
 
     def _add_page_content_to_html_template(self, title: str, body: str) -> str:
+        # TODO: is this worth something like a jinja template or at least another
+        # solution where the multiline string doesn't ruin the indentation?
         return f"""<!DOCTYPE HTML><html><head><title>{title}</title></head>
 <body>{body}</body></html>"""
