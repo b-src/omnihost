@@ -21,8 +21,8 @@ See the Roadmap section for a complete list
 Officially, currently none. Initial release has been manually tested on a linux machine. You should (probably) be alright if you have:
  * a new enough version of python
  * pip
- * `pyenv`
- * `pyenv-virtualenv` 
+ * [pyenv](https://github.com/pyenv/pyenv)
+ * [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)
 
 ### Dependencies
 
@@ -73,6 +73,7 @@ $ python3 main.py -i <gemtext/source/dir> -w <html/output/dir> -o <gemtext/outpu
 Arguments:
  * `-i` gemtext source directory path. This argument is required.
  * `-w` html output directory path. This argument is optional. If an html output path is provided, gemtext files will be converted to html and placed in this directory. This directory must be empty.
+ * `-o` gemini output directory path. This argument is optional. If a gemini output path is provided, gemtext files will be copied from the source directory to this directory.
  * `-g` gopher output directory path. This argument is optional. At present nothing is done with this argument. Eventually, if a gopher output path is provided, gemtext files will be converted to gophermaps and placed in this directory. This directory must be empty.
  * `-s` stylesheet path. This argument is optional. If a stylesheet path is provided, the stylesheet will be copied to \<html/output/dir>/css/\<stylesheet> and linked to the html pages as css/\<stylesheet>
  
@@ -87,6 +88,7 @@ Arguments:
   * Add automated tests
   * Use `poetry` to manage dependencies so that dependencies can be listed in `pyproject.toml` instead of `requirements.txt`
   * Separate dev dependencies from actual project dependencies
+  * Add support for nested directory structures for both input and output instead of requiring all input files to be in the top level of the input directory
   * Improve formatting of html output to make it nicely human-readable
 
 ## License
