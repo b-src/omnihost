@@ -52,34 +52,30 @@ class OmniConverter:
         """
         # No reason to parse gemtext files if we're only copying them somewhere
         if self._convert_to_html or self._convert_to_gopher:
-            for gemtext_file_path in os.listdir(self._source_dir):
+            for gemtext_file in os.listdir(self._source_dir):
+                gemtext_file_path = os.path.join(self._source_dir, gemtext_file)
+                gemtext_file_name = os.path.splitext(gemtext_file)[0]
 
-                # TODO: does this need to be converted to full absolute path?
                 gemlines = self._gemtext_parser.parse_file_to_gemlines(gemtext_file_path)
 
                 if self._convert_to_html:
-                    page_title = self._convert_filename_to_title(gemtext_file_path)
+                    html_output_path = os.path.join(self._html_output_dir, f"{gemtext_file_name}.html")
+                    page_title = self._convert_filename_to_title(gemtext_file_name)
                     html = self._html_converter.convert_gemlines_to_html(
                         gemlines, page_title
                     )
                     # TODO: fix file extension
-                    with open(
-                        os.path.join(self._html_output_dir, gemtext_file_path), mode="x"  # type: ignore
-                    ) as f:
+                    with open(html_output_path, mode="x") as f:
                         f.write(html)
 
                 if self._convert_to_gopher:
                     pass
 
         if self._copy_gemini_files:
-            copytree(self._source_dir, self._gemini_output_dir)  # type: ignore
+            copytree(self._source_dir, self._gemini_output_dir, dirs_exist_ok=True)  # type: ignore
 
     def _convert_filename_to_title(self, filename: str) -> str:
-        """Assuming a file format of 'file_name_lowercase_with_underscores.gmi',
+        """Assuming a file name format of 'file_name_lowercase_with_underscores',
         convert to 'File Name Lowercase With Underscores'
-
-        requires only one '.' in filename
         """
-        # TODO: this is really lazy and hard to read, split into something reasonable
-        # instead of a too-clever one-liner
-        return " ".join(word.capitalize() for word in filename.split(".")[0].split("_"))
+        return " ".join(word.capitalize() for word in filename.split("_"))

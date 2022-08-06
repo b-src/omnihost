@@ -5,7 +5,7 @@ from typing import Optional
 from omniconverter import OmniConverter
 
 
-def main() -> None:
+def main(argv: list[str]=None) -> None:
     arg_parser = argparse.ArgumentParser(
         prog="omniconverter",
         description="Convert gemtext markup to html (and eventually gopher)",
@@ -18,7 +18,7 @@ def main() -> None:
         help="The source path for gemtext files to convert.",
     )
     arg_parser.add_argument(
-        "-h",
+        "-w",
         "--html_dir",
         dest="html_output_dir",
         nargs="?",
@@ -42,17 +42,12 @@ def main() -> None:
         help="The destination path for generated gopher files.",
     )
 
-    source_dir = ""
-    html_output_dir = None
-    gemini_output_dir = None
-    gopher_output_dir = None
+    args = arg_parser.parse_args(argv)
 
-    arg_parser.parse_args()
-
-    check_args(source_dir, html_output_dir, gemini_output_dir, gopher_output_dir)
+    check_args(args.source_dir, args.html_output_dir, args.gemini_output_dir, args.gopher_output_dir)
 
     omniconverter = OmniConverter(
-        source_dir, html_output_dir, gemini_output_dir, gopher_output_dir
+        args.source_dir, args.html_output_dir, args.gemini_output_dir, args.gopher_output_dir
     )
 
     omniconverter.convert_gemini_files()
