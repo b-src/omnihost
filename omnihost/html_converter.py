@@ -21,17 +21,17 @@ class HTMLConverter:
         for gemline in gemlines:
             if self._state == HTMLConverterState.DEFAULT:
                 if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
-                    self._start_preformatted_line(alt_text=gemline.line_contents)
+                    html_body += self._start_preformatted_line(alt_text=gemline.line_contents)
 
                 elif gemline.line_type == LineType.PREFORMATTED:
-                    self._start_preformatted_line(content=gemline.line_contents)
+                    html_body += self._start_preformatted_line(content=gemline.line_contents)
 
                 elif gemline.line_type == LineType.LISTITEM:
                     self._state = HTMLConverterState.LIST
                     html_body += f"<ul><li>{gemline.line_contents}</li>"
 
                 else:
-                    self._convert_default_gemline_to_html
+                    html_body += self._convert_default_gemline_to_html(gemline)
 
             elif self._state == HTMLConverterState.PREFORMATTED:
                 if gemline.line_type == LineType.PREFORMATTED:
@@ -104,14 +104,11 @@ class HTMLConverter:
 
     def _convert_link_to_html(self, gemline: GemLine) -> str:
         content = gemline.line_contents.strip().split()
-        # Assumes that there is a maximum of 1 region of whitespace within link content
-        if len(content) > 2:
-            # TODO unique exception type
-            raise Exception(
-                f"Improperly formatted link line: '=>{gemline.line_contents}'."
-            )
-        elif len(content) == 2:
-            return f'<a href="{content[0]}">{content[1]}</a>'
+        if len(content) == 0:
+            # TODO: unique exception type
+            raise Exception("Empty link line")
+        if len(content) >= 2:
+            return f'<a href="{content[0]}">{" ".join(content[1:])}</a>'
         else:
             return f'<a href="{content[0]}">{content[0]}</a>'
 
