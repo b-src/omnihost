@@ -108,9 +108,9 @@ class HTMLConverter:
             # TODO: unique exception type
             raise Exception("Empty link line")
         if len(content) >= 2:
-            return f'<a href="{content[0]}">{" ".join(content[1:])}</a>'
+            return f'<p><a href="{content[0]}">{" ".join(content[1:])}</a></p>'
         else:
-            return f'<a href="{content[0]}">{content[0]}</a>'
+            return f'<p><a href="{content[0]}">{content[0]}</a></p>'
 
     def _convert_block_quote_to_html(self, gemline: GemLine) -> str:
         """Handle a variable amount of whitespace at the start of a quote line."""

@@ -95,6 +95,8 @@ class GemtextParser:
         """
         line_type = LineType.UNINITIALIZED
         line_content = ""
+        # Remove trailing '\n
+        line = line.rstrip()
 
         if len(line) >= 3 and line[:3] == "###":
             line_type = LineType.SUBSUBHEADING
