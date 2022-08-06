@@ -74,7 +74,7 @@ Arguments:
  * `-i` gemtext source directory path. This argument is required.
  * `-w` html output directory path. This argument is optional. If an html output path is provided, gemtext files will be converted to html and placed in this directory. This directory must be empty.
  * `-g` gopher output directory path. This argument is optional. At present nothing is done with this argument. Eventually, if a gopher output path is provided, gemtext files will be converted to gophermaps and placed in this directory. This directory must be empty.
- * `-s` stylesheet path. This argument is optional. If a stylesheet path is provided, the stylesheet will be copied to <html/output/dir>/css/<stylesheet> and linked to the html pages as css/<stylesheet>
+ * `-s` stylesheet path. This argument is optional. If a stylesheet path is provided, the stylesheet will be copied to \<html/output/dir>/css/\<stylesheet> and linked to the html pages as css/\<stylesheet>
  
  ## Roadmap
  
