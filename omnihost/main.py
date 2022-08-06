@@ -5,7 +5,7 @@ from typing import Optional
 from omniconverter import OmniConverter
 
 
-def main(argv: list[str]=None) -> None:
+def main(argv: Optional[list[str]] = None) -> None:
     arg_parser = argparse.ArgumentParser(
         prog="omniconverter",
         description="Convert gemtext markup to html (and eventually gopher)",
@@ -41,13 +41,31 @@ def main(argv: list[str]=None) -> None:
         default=None,
         help="The destination path for generated gopher files.",
     )
+    arg_parser.add_argument(
+        "-s",
+        "--css_template",
+        dest="css_template_path",
+        nargs="?",
+        default=None,
+        help="The css template to be applied to all html pages.",
+    )
 
     args = arg_parser.parse_args(argv)
 
-    check_args(args.source_dir, args.html_output_dir, args.gemini_output_dir, args.gopher_output_dir)
+    check_args(
+        args.source_dir,
+        args.html_output_dir,
+        args.gemini_output_dir,
+        args.gopher_output_dir,
+        args.css_template_path,
+    )
 
     omniconverter = OmniConverter(
-        args.source_dir, args.html_output_dir, args.gemini_output_dir, args.gopher_output_dir
+        args.source_dir,
+        args.html_output_dir,
+        args.gemini_output_dir,
+        args.gopher_output_dir,
+        args.css_template_path,
     )
 
     omniconverter.convert_gemini_files()
@@ -58,6 +76,7 @@ def check_args(
     html_output_dir: Optional[str],
     gemini_output_dir: Optional[str],
     gopher_output_dir: Optional[str],
+    css_template_path: Optional[str],
 ) -> None:
     # TODO: unique exception types throughout
     if source_dir == "":
@@ -73,6 +92,10 @@ def check_args(
     check_output_dir(html_output_dir, "HTML output")
     check_output_dir(gemini_output_dir, "Gemtext output")
     check_output_dir(gopher_output_dir, "Gopher output")
+
+    if css_template_path is not None:
+        if not os.path.exists(css_template_path):
+            raise Exception(f"CSS template {css_template_path} does not exist.")
 
 
 def check_output_dir(dir_path: Optional[str], dir_name: str) -> None:

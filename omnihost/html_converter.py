@@ -15,16 +15,22 @@ class HTMLConverter:
     def __init__(self) -> None:
         self._state = HTMLConverterState.DEFAULT
 
-    def convert_gemlines_to_html(self, gemlines: list[GemLine], title: str) -> str:
+    def convert_gemlines_to_html(
+        self, gemlines: list[GemLine], title: str, stylesheet: Optional[str]
+    ) -> str:
         self._state = HTMLConverterState.DEFAULT
         html_body = ""
         for gemline in gemlines:
             if self._state == HTMLConverterState.DEFAULT:
                 if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
-                    html_body += self._start_preformatted_line(alt_text=gemline.line_contents)
+                    html_body += self._start_preformatted_line(
+                        alt_text=gemline.line_contents
+                    )
 
                 elif gemline.line_type == LineType.PREFORMATTED:
-                    html_body += self._start_preformatted_line(content=gemline.line_contents)
+                    html_body += self._start_preformatted_line(
+                        content=gemline.line_contents
+                    )
 
                 elif gemline.line_type == LineType.LISTITEM:
                     self._state = HTMLConverterState.LIST
@@ -60,7 +66,9 @@ class HTMLConverter:
                         self._state = HTMLConverterState.DEFAULT
                         html_body += self._convert_default_gemline_to_html(gemline)
 
-        html_contents = self._add_page_content_to_html_template(title, html_body)
+        html_contents = self._add_page_content_to_html_template(
+            title, html_body, stylesheet
+        )
 
         return html_contents
 
@@ -117,8 +125,14 @@ class HTMLConverter:
         quote_content = gemline.line_contents.strip()
         return f"<p>&gt; {quote_content}</p>"
 
-    def _add_page_content_to_html_template(self, title: str, body: str) -> str:
+    def _add_page_content_to_html_template(
+        self, title: str, body: str, stylesheet: Optional[str]
+    ) -> str:
         # TODO: is this worth something like a jinja template or at least another
         # solution where the multiline string doesn't ruin the indentation?
-        return f"""<!DOCTYPE HTML><html><head><title>{title}</title></head>
+        css_link = ""
+        if stylesheet is not None:
+            css_link = f'<link rel="stylesheet" href="css/{stylesheet}" />'
+
+        return f"""<!DOCTYPE HTML><html><head><title>{title}</title>{css_link}</head>
 <body>{body}</body></html>"""
