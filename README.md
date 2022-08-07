@@ -86,10 +86,12 @@ Arguments:
   * Add logging
   * Improve error handling, add custom exception types
   * Add automated tests
-  * Use `poetry` to manage dependencies so that dependencies can be listed in `pyproject.toml` instead of `requirements.txt`
-  * Separate dev dependencies from actual project dependencies
   * Add support for nested directory structures for both input and output instead of requiring all input files to be in the top level of the input directory
   * Improve formatting of html output to make it nicely human-readable
+  * Consider adding a preprocessing step using something like mdbook to allow for for meta control of generated pages. Would allow for things like:
+    + stylesheets specified per page
+    + titles that aren't dependent on the file name
+    + metadata to support things like auto-generation of subject indexes for wikis
 
 ## License
 
