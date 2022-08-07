@@ -18,56 +18,55 @@ See the Roadmap section for a complete list
 
 ### Supported platforms
 
-Officially, currently none. Initial release has been manually tested on a linux machine. You should (probably) be alright if you have:
- * a new enough version of python
+The current release has been manually tested on a linux machine. You should (probably) be alright if you have:
+ * a new enough version of python or the ability to install one with `pyenv`
  * pip
  * [pyenv](https://github.com/pyenv/pyenv)
  * [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)
 
 ### Dependencies
 
-python v3.10.5
+python v3.10.5 or newer
 
 Instructions in the Installing section assume you are using `pyenv` and `pyenv-virtualenv`
 
 ### Installing
 
-This process will change, hopefull soon. For now "installation" and usage looks a lot like development.
+Omnihost can be installed from the python package index via pip ([pypi](https://pypi.org/project/omnihost))
 
-clone the repo
-```
-$ git clone https://github.com/b-src/omnihost.git
-```
+As omnihost currently has no dependencies outside of the python standard library, you should be alright installing it in your global python environment if your system python is new enough. Best practice would be to install it in a virtual environment.
 
-install python v3.10.5 with `pyenv` if your system python uses a different version
+Install python v3.10.5 with `pyenv` if your system python uses a different version
 ```
 $ pyenv install 3.10.5
 ```
 
-create a virtual environment using `pyenv-virtualenv`
+Create a virtual environment using `pyenv-virtualenv`
 ```
-pyenv virtualenv 3.10.5 omnihost-3.10.5
-```
-
-activate the venv if you don't have pyenv virtualenv-init added to your shell to automatically activate venvs
-```
-$ pyenv activate omnihost-3.10.5
+pyenv virtualenv 3.10.5 omnihost
 ```
 
-install dependencies in the virtual environment
+
+Activate the venv
 ```
-$ python3 -m pip install -r requirements.txt
+$ pyenv activate omnihost
+```
+
+Install omnihost in the virtual environment
+```
+$ python3 -m pip install omnihost
 ```
 
 ### Running
 
-Currently the only way to run the project is by running main.py with command line arguments
-
-Make sure your virtual environment is active and cd to the omnihost/ directory
-
-Run main.py
+Activate your venv
 ```
-$ python3 main.py -i <gemtext/source/dir> -w <html/output/dir> -o <gemtext/output/dir> -g <gopher/output/dir> -s <stylesheet/path>
+$ pyenv activate omnihost
+```
+
+Run omnihost
+```
+$ omnihost -i <gemtext/source/dir> -w <html/output/dir> -o <gemtext/output/dir> -g <gopher/output/dir> -s <stylesheet/path>
 ```
 
 Arguments:
@@ -82,7 +81,6 @@ Arguments:
  This is roughly ordered by priority except for conversion of gemtext to gophermaps. That's listed first because it's the biggest piece of missing functionality, but I'm planning to shore up the html conversion before adding that in
  
   * Add ability to convert gemtext to gophermaps
-  * Improve deployment story
   * Add logging
   * Improve error handling, add custom exception types
   * Add automated tests
