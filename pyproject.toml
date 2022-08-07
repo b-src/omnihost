@@ -1,3 +1,22 @@
+[tool.poetry]
+name = "omnihost"
+version = "0.2.0"
+description = "Easily convert native Gemini (gemtext markup) files into html and gophermaps for trihosting"
+authors = ["Brett Gleason <brettmgleason@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+black = "^22.6.0"
+flakeheaven = "^3.0.0"
+mypy = "^0.971"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 line-length = 90
 extend-exclude = '''
@@ -19,8 +38,6 @@ no_implicit_optional = true
 warn_unused_ignores = true
 warn_return_any = true
 
-
-
 [tool.flakeheaven]
 max_line_length = 90
 format = "grouped"
@@ -35,22 +52,3 @@ pycodestyle = [
     "-E203",
     "-W503",
 ]
-
-[tool.poetry]
-name = "omnihost"
-version = "0.2.0"
-description = "Easily convert native Gemini (gemtext markup) files into html and gophermaps for trihosting"
-authors = ["Brett Gleason <brettmgleason@gmail.com>"]
-license = "MIT"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-
-[tool.poetry.dev-dependencies]
-black = "^22.6.0"
-flakeheaven = "^3.0.0"
-mypy = "^0.971"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
