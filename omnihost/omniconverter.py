@@ -2,8 +2,8 @@ import os
 from shutil import copy, copytree
 from typing import Optional
 
-from gemtext_parser import GemtextParser
-from html_converter import HTMLConverter
+from omnihost.gemtext_parser import GemtextParser
+from omnihost.html_converter import HTMLConverter
 
 
 class OmniConverter:

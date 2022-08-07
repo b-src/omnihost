@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import auto, Enum
 from typing import Optional
 
-from gemtext_parser import GemLine, LineType
+from omnihost.gemtext_parser import GemLine, LineType
 
 
 class HTMLConverterState(Enum):

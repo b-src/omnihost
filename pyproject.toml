@@ -3,7 +3,24 @@ name = "omnihost"
 version = "0.2.0"
 description = "Easily convert native Gemini (gemtext markup) files into html and gophermaps for trihosting"
 authors = ["Brett Gleason <brettmgleason@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "omnihost" },
+]
 license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Internet",
+]
+homepage = "https://github.com/b-src/omnihost"
+repository = "https://github.com/b-src/omnihost"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -12,6 +29,9 @@ python = "^3.10"
 black = "^22.6.0"
 flakeheaven = "^3.0.0"
 mypy = "^0.971"
+
+[tool.poetry.scripts]
+omnihost = "omnihost.__main__:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,3 +1,5 @@
+# binaries
+dist/
 # pycache
 **/__pycache__/**
 

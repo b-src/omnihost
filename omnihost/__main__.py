@@ -2,7 +2,7 @@ import argparse
 import os
 from typing import Optional
 
-from omniconverter import OmniConverter
+from omnihost.omniconverter import OmniConverter
 
 
 def main(argv: Optional[list[str]] = None) -> None:
