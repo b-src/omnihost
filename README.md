@@ -9,7 +9,6 @@ Easily convert a directory full of gemtext markup into HTML and (eventually) gop
 This tool is a work it progress. It should not be considered stable before the v1.0.0 release. Breaking changes may occur at any time.
 
 There are still large swaths of functionality that have not been implemented, including but not limited to:
- - a reasonable deployment story
  - the ability to convert gemtext markup to gopher
  - logging
  - any sort of automated tests
@@ -38,35 +37,35 @@ As omnihost currently has no dependencies outside of the python standard library
 
 Install python v3.10.5 with `pyenv` if your system python uses a different version
 ```
-$ pyenv install 3.10.5
+ $ pyenv install 3.10.5
 ```
 
 Create a virtual environment using `pyenv-virtualenv`
 ```
-pyenv virtualenv 3.10.5 omnihost
+ $ pyenv virtualenv 3.10.5 omnihost
 ```
 
 
 Activate the venv
 ```
-$ pyenv activate omnihost
+ $ pyenv activate omnihost
 ```
 
 Install omnihost in the virtual environment
 ```
-$ python3 -m pip install omnihost
+ $ python3 -m pip install omnihost
 ```
 
 ### Running
 
 Activate your venv
 ```
-$ pyenv activate omnihost
+ $ pyenv activate omnihost
 ```
 
 Run omnihost
 ```
-$ omnihost -i <gemtext/source/dir> -w <html/output/dir> -o <gemtext/output/dir> -g <gopher/output/dir> -s <stylesheet/path>
+ $ omnihost -i <gemtext/source/dir> -w <html/output/dir> -o <gemtext/output/dir> -g <gopher/output/dir> -s <stylesheet/path>
 ```
 
 Arguments:
