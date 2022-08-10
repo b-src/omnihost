@@ -115,10 +115,33 @@ class HTMLConverter:
         if len(content) == 0:
             # TODO: unique exception type
             raise Exception("Empty link line")
-        if len(content) >= 2:
-            return f'<p><a href="{content[0]}">{" ".join(content[1:])}</a></p>'
         else:
-            return f'<p><a href="{content[0]}">{content[0]}</a></p>'
+            link = self._convert_link_for_html(content[0])
+            if len(content) >= 2:
+                return f'<p><a href="{link}">{" ".join(content[1:])}</a></p>'
+            else:
+                return f'<p><a href="{link}">{content[0]}</a></p>'
+            
+    def _convert_link_for_html(self, original_link: str) -> str:
+        """Recognize if a link is an internal link and link to the html page instead
+        of the original link referencing the gemtext page.
+
+        Requires that internal links are using relative rather than absolute URLs
+        TODO: is there a better way to handle this? are there additional edge cases not accounted for?
+        """
+        if "://" in original_link:
+            # Absolute URL
+            return original_link
+        elif original_link.startswith("mailto:")
+            # Absolute URL
+            return original_link:
+        else:
+            # Relative link to gemini page
+            if original_link.endswith(".gmi"):
+                return f"{original_link[:-3]}.html"
+            # Relative link to something else
+            else:
+                return original_link
 
     def _convert_block_quote_to_html(self, gemline: GemLine) -> str:
         """Handle a variable amount of whitespace at the start of a quote line."""
