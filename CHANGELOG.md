@@ -3,13 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project (sort of*) adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-\* Sort of meaning that there may be breaking changes in minor releases prior to v1.0.0. The project should not be considered stable until then. Patch releases will still only contain fixes. Minor releases will contain non-breaking changes and could also include breaking changes. I will do my best to call these out in this changelog
 
 ## [Unreleased]
 
- - None
+### Fixes
+
+ - Fix internal links so that the html pages no longer point to gemini pages
 
 ## [0.2.0] - 2022-08-07
 
