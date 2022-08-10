@@ -69,6 +69,10 @@ show_source = true
 # binary operators. PEP-8 recommends linebreaks before binary operators to keep all
 # operators aligned. this config respects W504 and ignores W503
 pycodestyle = [
+    "+*",
     "-E203",
     "-W503",
+]
+pyflakes = [
+    "+*",
 ]
