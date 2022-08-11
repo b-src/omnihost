@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+ - None
+ 
+## [0.2.1] - 2022-08-11
+
 ### Fixes
 
  - Fix internal links so that the html pages no longer point to gemini pages
