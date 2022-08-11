@@ -132,13 +132,13 @@ class HTMLConverter:
         if "://" in original_link:
             # Absolute URL
             return original_link
-        elif original_link.startswith("mailto:")
+        elif original_link.startswith("mailto:"):
             # Absolute URL
-            return original_link:
+            return original_link
         else:
             # Relative link to gemini page
             if original_link.endswith(".gmi"):
-                return f"{original_link[:-3]}.html"
+                return f"{original_link[:-4]}.html"
             # Relative link to something else
             else:
                 return original_link

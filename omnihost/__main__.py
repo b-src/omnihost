@@ -7,7 +7,7 @@ from omnihost.omniconverter import OmniConverter
 
 def main(argv: Optional[list[str]] = None) -> None:
     arg_parser = argparse.ArgumentParser(
-        prog="omniconverter",
+        prog="omnihost",
         description="Convert gemtext markup to html (and eventually gopher)",
     )
     arg_parser.add_argument(
