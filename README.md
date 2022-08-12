@@ -84,6 +84,7 @@ Arguments:
   * Improve error handling, add custom exception types
   * Add automated tests
   * Add support for nested directory structures for both input and output instead of requiring all input files to be in the top level of the input directory
+  * Add ability to insert header/footer on output gemtext files to support things like links back to the home page and copyright or license notices
   * Improve formatting of html output to make it nicely human-readable
   * Consider adding a preprocessing step using something like mdbook to allow for for meta control of generated pages. Would allow for things like:
     + stylesheets specified per page
