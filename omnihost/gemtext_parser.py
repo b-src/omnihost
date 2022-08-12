@@ -85,7 +85,7 @@ class GemtextParser:
             self._parse_mode = ParseMode.DEFAULT
         else:
             # invalid parse mode, TODO: throw unique exception instead
-            raise Exception("Attempted to toggle un-toggleable parse mode.")
+            raise GemtextParserException(f"Attempted to toggle un-toggleable parse mode: {self._parse_mode}.")
 
     def _parse_default_mode_gemline(self, line: str) -> GemLine:
         """Parse a gemline in default mode. This method assumes:
@@ -127,3 +127,7 @@ class GemtextParser:
             line_content = line
 
         return GemLine(line_type, line_content)
+
+class GemtextParserException(Exception):
+    """Represents errors that occur within the GemtextParser"""
+    pass
