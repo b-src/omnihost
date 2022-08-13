@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
- - None
+### Changed
+ - Add custom exception types to improve error handling
  
 ## [0.2.1] - 2022-08-11
 
