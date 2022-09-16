@@ -62,8 +62,64 @@ warn_return_any = true
 max_line_length = 90
 format = "grouped"
 show_source = true
+# Used by flake8-annotations-complexity
+max-annotations-complexity = 4
+# Used by flake8-noqa
+noqa-require-code = true
+noqa-include-name = true
 
 [tool.flakeheaven.plugins]
+dlint = [
+    "+*",
+]
+flake8-alphabetize = [
+    "+*",
+]
+flake8-annotations-complexity = [
+    "+*",
+]
+flake8-bugbear = [
+    "+*",
+]
+flake8-commas = [
+    "+*",
+]
+flake8-comprehensions = [
+    "+*",
+]
+flake8-debugger = [
+    "+*",
+]
+flake8-docstring = [
+    "+*",
+]
+flake8-eradicate = [
+    "+*",
+]
+flake8-fixme = [
+    "+*",
+]
+flake8-logging-format = [
+    "+*",
+]
+flake8-no-implicit-concat = [
+    "+*",
+]
+flake8-noqa = [
+    "+*",
+]
+flake8-pytest = [
+    "+*",
+]
+flake8-pytest-style = [
+    "+*",
+]
+flake8-use-fstring = [
+    "+*",
+]
+pep8-naming = [
+    "+*",
+]
 # E203 required to maintain compatibility with black
 # W503 is a linebreak before binary operators. flake8 also has W504, linebreak *after*
 # binary operators. PEP-8 recommends linebreaks before binary operators to keep all
