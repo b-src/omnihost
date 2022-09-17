@@ -10,7 +10,6 @@ This tool is a work it progress. It should not be considered stable before the v
 
 There are still large swaths of functionality that have not been implemented, including but not limited to:
  - the ability to convert gemtext markup to gopher
- - logging
  - any sort of automated tests
 
 See the Roadmap section for a complete list
@@ -80,8 +79,6 @@ Arguments:
  This is roughly ordered by priority except for conversion of gemtext to gophermaps. That's listed first because it's the biggest piece of missing functionality, but I'm planning to shore up the html conversion before adding that in
  
   * Add ability to convert gemtext to gophermaps
-  * Add logging
-  * Improve error handling, add custom exception types
   * Add automated tests
   * Add support for nested directory structures for both input and output instead of requiring all input files to be in the top level of the input directory
   * Add ability to insert header/footer on output gemtext files to support things like links back to the home page and copyright or license notices
