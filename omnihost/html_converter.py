@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+import logging
 from enum import auto, Enum
 from typing import Optional
 
@@ -70,6 +70,7 @@ class HTMLConverter:
             title, html_body, stylesheet
         )
 
+        logging.info("HTML conversion successful")
         return html_contents
 
     def _start_preformatted_line(
@@ -77,14 +78,13 @@ class HTMLConverter:
     ) -> str:
         self._state = HTMLConverterState.PREFORMATTED
         if not alt_text and not content:
-            # TODO: unique exception type
-            raise Exception(
+            raise HTMLConverterException(
                 "The start of a preformatted block requires either alt_text or content."
             )
         elif alt_text and content:
-            # TODO: unique exception type
-            raise Exception(
-                "The start of a preformatted block cannot have both alt_text and content."
+            raise HTMLConverterException(
+                "The start of a preformatted block cannot have both alt_text and "
+                + f"content. Alt text: '{alt_text}', content: '{content}'"
             )
         elif alt_text:
             return f'<pre alt="{alt_text}">'
@@ -106,32 +106,35 @@ class HTMLConverter:
             case LineType.BLOCKQUOTE:
                 return self._convert_block_quote_to_html(gemline)
             case _:
-                raise Exception(
-                    f"_convert_default_gemline_to_html() called on invalid LineType {gemline.line_type}."
+                raise HTMLConverterException(
+                    "_convert_default_gemline_to_html() called on invalid LineType"
+                    + f"{gemline.line_type}."
                 )
 
     def _convert_link_to_html(self, gemline: GemLine) -> str:
         content = gemline.line_contents.strip().split()
         if len(content) == 0:
-            # TODO: unique exception type
-            raise Exception("Empty link line")
+            raise HTMLConverterException("Empty link line")
         else:
             link = self._convert_link_for_html(content[0])
             if len(content) >= 2:
                 return f'<p><a href="{link}">{" ".join(content[1:])}</a></p>'
             else:
                 return f'<p><a href="{link}">{content[0]}</a></p>'
-            
+
     def _convert_link_for_html(self, original_link: str) -> str:
         """Recognize if a link is an internal link and link to the html page instead
         of the original link referencing the gemtext page.
 
         Requires that internal links are using relative rather than absolute URLs
-        TODO: is there a better way to handle this? are there additional edge cases not accounted for?
+        TODO: is there a better way to handle this? are there additional edge cases not
+        accounted for?
         """
         if "://" in original_link:
             # Absolute URL
             return original_link
+        # This case probably doesn't need to be handled specially since AFAIK '.gmi' is
+        # not a valid top level domain
         elif original_link.startswith("mailto:"):
             # Absolute URL
             return original_link
@@ -159,3 +162,9 @@ class HTMLConverter:
 
         return f"""<!DOCTYPE HTML><html><head><title>{title}</title>{css_link}</head>
 <body>{body}</body></html>"""
+
+
+class HTMLConverterException(Exception):
+    """Represents errors that occur within the HTMLConverter."""
+
+    pass

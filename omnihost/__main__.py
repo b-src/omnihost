@@ -1,11 +1,16 @@
 import argparse
+import logging
 import os
+import sys
 from typing import Optional
 
-from omnihost.omniconverter import OmniConverter
+from omnihost.gemtext_parser import GemtextParserException
+from omnihost.omniconverter import OmniConverter, OmniConverterException
 
 
 def main(argv: Optional[list[str]] = None) -> None:
+    # Since we are just logging to stdout for now, the message contents are all we need
+    logging.basicConfig(format="%(message)s")
     arg_parser = argparse.ArgumentParser(
         prog="omnihost",
         description="Convert gemtext markup to html (and eventually gopher)",
@@ -60,15 +65,32 @@ def main(argv: Optional[list[str]] = None) -> None:
         args.css_template_path,
     )
 
-    omniconverter = OmniConverter(
-        args.source_dir,
-        args.html_output_dir,
-        args.gemini_output_dir,
-        args.gopher_output_dir,
-        args.css_template_path,
-    )
+    try:
+        omniconverter = OmniConverter(
+            args.source_dir,
+            args.html_output_dir,
+            args.gemini_output_dir,
+            args.gopher_output_dir,
+            args.css_template_path,
+        )
 
-    omniconverter.convert_gemini_files()
+        omniconverter.convert_gemini_files()
+        sys.exit()
+
+    except ArgumentException as e:
+        logging.error(f"Argument error: {e}")
+        sys.exit(1)
+
+    except GemtextParserException as e:
+        logging.error(f"Gemtext parsing error: {e}")
+        sys.exit(1)
+
+    except OmniConverterException as e:
+        logging.error(f"{e}")
+
+    except Exception as e:
+        logging.error(f"Unexpected exception occured: {e}")
+        sys.exit(1)
 
 
 def check_args(
@@ -78,16 +100,15 @@ def check_args(
     gopher_output_dir: Optional[str],
     css_template_path: Optional[str],
 ) -> None:
-    # TODO: unique exception types throughout
     if source_dir == "":
-        raise Exception("Empty input dir path provided")
+        raise ArgumentException("Empty input dir path provided")
     if not os.path.exists(source_dir):
-        raise Exception(f"Gemtext input directory '{source_dir}' does not exist.")
+        raise ArgumentException(f"Gemtext input directory '{source_dir}' does not exist.")
     if not os.listdir(source_dir):
-        raise Exception(f"Gemtext input directory '{source_dir}' is empty.")
+        raise ArgumentException(f"Gemtext input directory '{source_dir}' is empty.")
 
     if not html_output_dir and not gemini_output_dir and not gopher_output_dir:
-        raise Exception(f"No HTML, gemini, or gopher output directories provided")
+        raise ArgumentException("No HTML, gemini, or gopher output directories provided")
 
     check_output_dir(html_output_dir, "HTML output")
     check_output_dir(gemini_output_dir, "Gemtext output")
@@ -95,16 +116,22 @@ def check_args(
 
     if css_template_path is not None:
         if not os.path.exists(css_template_path):
-            raise Exception(f"CSS template {css_template_path} does not exist.")
+            raise ArgumentException(f"CSS template {css_template_path} does not exist.")
 
 
 def check_output_dir(dir_path: Optional[str], dir_name: str) -> None:
     # TODO: unique exception types throughout
     if dir_path is not None:
         if not os.path.exists(dir_path):
-            raise Exception(f"{dir_name} directory '{dir_path}' does not exist.")
+            raise ArgumentException(f"{dir_name} directory '{dir_path}' does not exist.")
         if os.listdir(dir_path):
-            raise Exception(f"{dir_name} directory '{dir_path}' is not empty.")
+            raise ArgumentException(f"{dir_name} directory '{dir_path}' is not empty.")
+
+
+class ArgumentException(Exception):
+    """Represents an error with an argument provided via CLI at runtime."""
+
+    pass
 
 
 if __name__ == "__main__":

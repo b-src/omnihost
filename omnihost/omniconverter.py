@@ -1,9 +1,11 @@
+import logging
 import os
 from shutil import copy, copytree
+from shutil import Error as shutilError
 from typing import Optional
 
 from omnihost.gemtext_parser import GemtextParser
-from omnihost.html_converter import HTMLConverter
+from omnihost.html_converter import HTMLConverter, HTMLConverterException
 
 
 class OmniConverter:
@@ -55,6 +57,8 @@ class OmniConverter:
         # No reason to parse gemtext files if we're only copying them somewhere
         if self._convert_to_html or self._convert_to_gopher:
             self._copy_stylesheet_to_output()
+            # TODO: why is this separate from the css destination path in
+            # _copy_stylesheet_to_output? should this be returned from that function?
             css_dest_path = None
             if self._css_template_path is not None:
                 css_dest_path = os.path.basename(self._css_template_path)
@@ -70,18 +74,44 @@ class OmniConverter:
                         self._html_output_dir, f"{gemtext_file_name}.html"  # type: ignore
                     )
                     page_title = self._convert_filename_to_title(gemtext_file_name)
-                    html = self._html_converter.convert_gemlines_to_html(
-                        gemlines, page_title, css_dest_path
-                    )
-                    # TODO: fix file extension
-                    with open(html_output_path, mode="x") as f:
-                        f.write(html)
+                    logging.info(f"Converting gemtext file {gemtext_file_path} to HTML")
+                    try:
+                        html = self._html_converter.convert_gemlines_to_html(
+                            gemlines, page_title, css_dest_path
+                        )
+                    except HTMLConverterException as e:
+                        raise OmniConverterException(
+                            f"Error converting {gemtext_file_path} to HTML"
+                        ) from e
+
+                    try:
+                        with open(html_output_path, mode="x") as f:
+                            f.write(html)
+                            logging.info(f"Successfully wrote {html_output_path}")
+                    except OSError as e:
+                        raise OmniConverterException(
+                            f"Error writing file {html_output_path}: {e}"
+                        )
 
                 if self._convert_to_gopher:
+                    logging.info(
+                        "Gopher conversion is not implemented yet,"
+                        + f"{gemtext_file_path} will not be converted to gopher"
+                    )
                     pass
 
         if self._copy_gemini_files:
-            copytree(self._source_dir, self._gemini_output_dir, dirs_exist_ok=True)  # type: ignore
+            logging.info(
+                f"Copying gemtext files from {self._source_dir}"
+                + f"to {self._gemini_output_dir}"
+            )
+            try:
+                copytree(self._source_dir, self._gemini_output_dir, dirs_exist_ok=True)  # type: ignore  # noqa: E501
+                logging.info(
+                    f"Successfully copied gemtext files to {self._gemini_output_dir}"
+                )
+            except shutilError as e:
+                logging.error(f"Error copying gemtext files: {e}")
 
     def _convert_filename_to_title(self, filename: str) -> str:
         """Assuming a file name format of 'file_name_lowercase_with_underscores',
@@ -96,4 +126,17 @@ class OmniConverter:
             css_dest_path = os.path.join(
                 css_dest_dir, os.path.basename(self._css_template_path)
             )
-            copy(self._css_template_path, css_dest_path)
+            logging.info(
+                f"Copying stylesheet from {self._css_template_path} to {css_dest_path}"
+            )
+            try:
+                copy(self._css_template_path, css_dest_path)
+                logging.info(f"Successfully copied stylesheet to {css_dest_path}")
+            except shutilError as e:
+                logging.error(f"Error copying stylesheet: {e}")
+
+
+class OmniConverterException(Exception):
+    """Represents errors that occur within the OmniConverter."""
+
+    pass
