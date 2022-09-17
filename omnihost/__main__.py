@@ -1,6 +1,7 @@
 import argparse
 import logging
 import os
+import sys
 from typing import Optional
 
 from omnihost.omniconverter import OmniConverter
@@ -73,10 +74,15 @@ def main(argv: Optional[list[str]] = None) -> None:
         )
 
         omniconverter.convert_gemini_files()
+        sys.exit()
+
     except ArgumentException as e:
         logging.error(f"Argument error: {e}")
+        sys.exit(1)
+
     except Exception as e:
         logging.error(f"Unexpected exception occured: {e}")
+        sys.exit(1)
 
 
 def check_args(
@@ -86,7 +92,6 @@ def check_args(
     gopher_output_dir: Optional[str],
     css_template_path: Optional[str],
 ) -> None:
-    # TODO: unique exception types throughout
     if source_dir == "":
         raise ArgumentException("Empty input dir path provided")
     if not os.path.exists(source_dir):
