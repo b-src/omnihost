@@ -10,7 +10,7 @@ from omnihost.omniconverter import OmniConverter, OmniConverterException
 
 def main(argv: Optional[list[str]] = None) -> None:
     # Since we are just logging to stdout for now, the message contents are all we need
-    logging.basicConfig(format="%(message)")
+    logging.basicConfig(format="%(message)s")
     arg_parser = argparse.ArgumentParser(
         prog="omnihost",
         description="Convert gemtext markup to html (and eventually gopher)",
