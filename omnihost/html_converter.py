@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from enum import auto, Enum
 from typing import Optional
@@ -70,6 +71,7 @@ class HTMLConverter:
             title, html_body, stylesheet
         )
 
+        logging.info("HTML conversion successful")
         return html_contents
 
     def _start_preformatted_line(

@@ -5,7 +5,7 @@ import sys
 from typing import Optional
 
 from omnihost.gemtext_parser import GemtextParserException
-from omnihost.omniconverter import OmniConverter
+from omnihost.omniconverter import OmniConverter, OmniConverterException
 
 
 def main(argv: Optional[list[str]] = None) -> None:
@@ -84,6 +84,9 @@ def main(argv: Optional[list[str]] = None) -> None:
     except GemtextParserException as e:
         logging.error(f"Gemtext parsing error: {e}")
         sys.exit(1)
+    
+    except OmniConverterException as e:
+        logging.error(f"{e}")
 
     except Exception as e:
         logging.error(f"Unexpected exception occured: {e}")

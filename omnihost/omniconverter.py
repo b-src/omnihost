@@ -68,20 +68,27 @@ class OmniConverter:
                 gemlines = self._gemtext_parser.parse_file_to_gemlines(gemtext_file_path)
 
                 if self._convert_to_html:
-                    logging.info("Converting gemtext files to HTML")
                     html_output_path = os.path.join(
                         self._html_output_dir, f"{gemtext_file_name}.html"  # type: ignore
                     )
                     page_title = self._convert_filename_to_title(gemtext_file_name)
-                    html = self._html_converter.convert_gemlines_to_html(
-                        gemlines, page_title, css_dest_path
-                    )
-                    with open(html_output_path, mode="x") as f:
-                        f.write(html)
-                        logging.info(f"Successfully wrote {html_output_path}")
+                    logging.info(f"Converting gemtext file {gemtext_file_path} to HTML")
+                    try:
+                        html = self._html_converter.convert_gemlines_to_html(
+                            gemlines, page_title, css_dest_path
+                        )
+                    except HTMLConverterException as e:
+                        raise OmniConverterException(f"Error converting {gemtext_file_path} to HTML") from e
+
+                    try:
+                        with open(html_output_path, mode="x") as f:
+                            f.write(html)
+                            logging.info(f"Successfully wrote {html_output_path}")
+                    except OSError as e:
+                        raise OmniConverterException(f"Error writing file {html_output_path}: {e}")
 
                 if self._convert_to_gopher:
-                    logging.info("Gopher conversion is not implemented yet, gemtext files will not be converted to gopher")
+                    logging.info(f"Gopher conversion is not implemented yet, {gemtext_file_path} will not be converted to gopher")
                     pass
 
         if self._copy_gemini_files:
@@ -111,3 +118,8 @@ class OmniConverter:
                 logging.info(f"Successfully copied stylesheet to {css_dest_path}")
             except shutil.error as e:
                 logging.error(f"Error copying stylesheet: {e}")
+
+
+class OmniConverterException(Exception):
+    """Represents errors that occur within the OmniConverter."""
+    pass
