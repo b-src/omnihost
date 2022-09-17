@@ -53,16 +53,19 @@ class GemtextParser:
                             try:
                                 self._toggle_parse_mode()
                             except GemtextParserException as e:
-                                raise GemtextParserException(f"Error while parsing file {file_path}") from e
+                                raise GemtextParserException(
+                                    f"Error while parsing file {file_path}"
+                                ) from e
 
-                            if self._parse_mode == ParseMode.PREFORMATTED and len(line) > len(
-                                self._STATE_TOGGLE_SYMBOL
-                            ):
+                            if self._parse_mode == ParseMode.PREFORMATTED and len(
+                                line
+                            ) > len(self._STATE_TOGGLE_SYMBOL):
                                 gemlines.append(
                                     GemLine(LineType.PREFORMATTED_ALT_TEXT, line[3:])
                                 )
                             elif self._parse_mode == ParseMode.DEFAULT:
-                                # proceed to the next line if this line closes the preformatted block
+                                # proceed to the next line if this line closes the
+                                # preformatted block
                                 # text after the "```" will be ignored
                                 gemlines.append(GemLine(LineType.END_PREFORMATTED, ""))
                         else:
@@ -95,7 +98,9 @@ class GemtextParser:
         elif self._parse_mode == ParseMode.PREFORMATTED:
             self._parse_mode = ParseMode.DEFAULT
         else:
-            raise GemtextParserException(f"Attempted to toggle un-toggleable parse mode: {self._parse_mode.name}.")
+            raise GemtextParserException(
+                f"Attempted to toggle un-toggleable parse mode: {self._parse_mode.name}."
+            )
 
     def _parse_default_mode_gemline(self, line: str) -> GemLine:
         """Parse a gemline in default mode. This method assumes:
@@ -138,6 +143,8 @@ class GemtextParser:
 
         return GemLine(line_type, line_content)
 
+
 class GemtextParserException(Exception):
     """Represents errors that occur within the GemtextParser"""
+
     pass

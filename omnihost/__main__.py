@@ -80,11 +80,11 @@ def main(argv: Optional[list[str]] = None) -> None:
     except ArgumentException as e:
         logging.error(f"Argument error: {e}")
         sys.exit(1)
-    
+
     except GemtextParserException as e:
         logging.error(f"Gemtext parsing error: {e}")
         sys.exit(1)
-    
+
     except OmniConverterException as e:
         logging.error(f"{e}")
 
@@ -108,7 +108,7 @@ def check_args(
         raise ArgumentException(f"Gemtext input directory '{source_dir}' is empty.")
 
     if not html_output_dir and not gemini_output_dir and not gopher_output_dir:
-        raise ArgumentException(f"No HTML, gemini, or gopher output directories provided")
+        raise ArgumentException("No HTML, gemini, or gopher output directories provided")
 
     check_output_dir(html_output_dir, "HTML output")
     check_output_dir(gemini_output_dir, "Gemtext output")
@@ -130,7 +130,9 @@ def check_output_dir(dir_path: Optional[str], dir_name: str) -> None:
 
 class ArgumentException(Exception):
     """Represents an error with an argument provided via CLI at runtime."""
+
     pass
+
 
 if __name__ == "__main__":
     main()
