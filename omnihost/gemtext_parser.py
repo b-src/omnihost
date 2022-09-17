@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from enum import Enum, auto
 
@@ -37,35 +38,45 @@ class GemtextParser:
         self._parse_mode = ParseMode.DEFAULT
         gemlines: list[GemLine] = []
 
-        with open(file_path, mode="r", encoding="utf-8") as f:
-            while self._parse_mode != ParseMode.EOF:
-                line = f.readline()
-                if not line:
-                    self._parse_mode = ParseMode.EOF
-                elif self._line_is_empty(line):
-                    # blank lines in Gemtext are just for the author's convenience
-                    pass
-                else:
-                    if self._line_toggles_parse_mode(line):
-                        self._toggle_parse_mode()
-                        if self._parse_mode == ParseMode.PREFORMATTED and len(line) > len(
-                            self._STATE_TOGGLE_SYMBOL
-                        ):
-                            gemlines.append(
-                                GemLine(LineType.PREFORMATTED_ALT_TEXT, line[3:])
-                            )
-                        elif self._parse_mode == ParseMode.DEFAULT:
-                            # proceed to the next line if this line closes the preformatted block
-                            # text after the "```" will be ignored
-                            gemlines.append(GemLine(LineType.END_PREFORMATTED, ""))
+        logging.info(f"Parsing {file_path}")
+        try:
+            with open(file_path, mode="r", encoding="utf-8") as f:
+                while self._parse_mode != ParseMode.EOF:
+                    line = f.readline()
+                    if not line:
+                        self._parse_mode = ParseMode.EOF
+                    elif self._line_is_empty(line):
+                        # blank lines in Gemtext are just for the author's convenience
+                        pass
                     else:
-                        if self._parse_mode == ParseMode.PREFORMATTED:
-                            gemlines.append(GemLine(LineType.PREFORMATTED, line))
+                        if self._line_toggles_parse_mode(line):
+                            try:
+                                self._toggle_parse_mode()
+                            except GemtextParserException as e:
+                                raise GemtextParserException(f"Error while parsing file {file_path}") from e
 
-                        elif self._parse_mode == ParseMode.DEFAULT:
-                            gemline = self._parse_default_mode_gemline(line)
-                            gemlines.append(gemline)
+                            if self._parse_mode == ParseMode.PREFORMATTED and len(line) > len(
+                                self._STATE_TOGGLE_SYMBOL
+                            ):
+                                gemlines.append(
+                                    GemLine(LineType.PREFORMATTED_ALT_TEXT, line[3:])
+                                )
+                            elif self._parse_mode == ParseMode.DEFAULT:
+                                # proceed to the next line if this line closes the preformatted block
+                                # text after the "```" will be ignored
+                                gemlines.append(GemLine(LineType.END_PREFORMATTED, ""))
+                        else:
+                            if self._parse_mode == ParseMode.PREFORMATTED:
+                                gemlines.append(GemLine(LineType.PREFORMATTED, line))
 
+                            elif self._parse_mode == ParseMode.DEFAULT:
+                                gemline = self._parse_default_mode_gemline(line)
+                                gemlines.append(gemline)
+
+        except OSError as e:
+            raise GemtextParserException(f"Error opening file {file_path}: {e}")
+
+        logging.info(f"Successfully parsed {file_path}")
         return gemlines
 
     def _line_is_empty(self, line: str) -> bool:
@@ -84,7 +95,6 @@ class GemtextParser:
         elif self._parse_mode == ParseMode.PREFORMATTED:
             self._parse_mode = ParseMode.DEFAULT
         else:
-            # invalid parse mode, TODO: throw unique exception instead
             raise GemtextParserException(f"Attempted to toggle un-toggleable parse mode: {self._parse_mode.name}.")
 
     def _parse_default_mode_gemline(self, line: str) -> GemLine:

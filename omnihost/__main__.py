@@ -4,6 +4,7 @@ import os
 import sys
 from typing import Optional
 
+from omnihost.gemtext_parser import GemtextParserException
 from omnihost.omniconverter import OmniConverter
 
 
@@ -78,6 +79,10 @@ def main(argv: Optional[list[str]] = None) -> None:
 
     except ArgumentException as e:
         logging.error(f"Argument error: {e}")
+        sys.exit(1)
+    
+    except GemtextParserException as e:
+        logging.error(f"Gemtext parsing error: {e}")
         sys.exit(1)
 
     except Exception as e:
