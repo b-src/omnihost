@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 class ConfigHandler:
@@ -20,7 +21,16 @@ class ConfigHandler:
         self._final_arg_check()
         
     def _check_for_missing_args_in_env(self) -> None:
-        pass
+        if self.source_dir is None:
+            self.source_dir = os.getenv("OMNIHOST_SOURCE_DIR")
+        if self.html_output_dir is None:
+            self.html_output_dir = os.getenv("OMNIHOST_HTML_OUTPUT_DIR")
+        if self.gemini_output_dir is None:
+            self.gemini_output_dir = os.getenv("OMNIHOST_GEMINI_OUTPUT_DIR")
+        if self.gopher_output_dir is None:
+            self.gopher_output_dir = os.getenv("OMNIHOST_GOPHER_OUTPUT_DIR")
+        if self.css_template_path is None:
+            self.css_template_path = os.getenv("OMNIHOST_CSS_TEMPLATE_PATH")
     
     def _check_for_missing_args_in_config_file(self) -> None:
         pass
