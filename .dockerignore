@@ -1,0 +1,11 @@
+**/__pycache__/**
+.mypy_cache
+.pytest_cache
+.vscode
+dist
+
+temp
+
+.env
+.python-version
+CHANGELOG.md

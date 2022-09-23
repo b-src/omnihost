@@ -1,13 +1,18 @@
 # binaries
 dist/
+
 # pycache
 **/__pycache__/**
+
+.mypy_cache
+.pytest_cache
 
 # venv
 .python-version
 
 # environment variables
 .env
+env.list
 
 # IDE
 .vscode/
