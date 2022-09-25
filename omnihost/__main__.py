@@ -4,7 +4,7 @@ import os
 import sys
 from typing import Optional
 
-from omnihost.config_handler import ConfigHandler, ArgumentException
+from omnihost.config_handler import ConfigHandler, ConfigException
 from omnihost.gemtext_parser import GemtextParserException
 from omnihost.omniconverter import OmniConverter, OmniConverterException
 
@@ -78,7 +78,7 @@ def main(argv: Optional[list[str]] = None) -> None:
         omniconverter.convert_gemini_files()
         sys.exit()
 
-    except ArgumentException as e:
+    except ConfigException as e:
         logging.error(f"Argument error: {e}")
         sys.exit(1)
 

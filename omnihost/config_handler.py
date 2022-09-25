@@ -1,3 +1,4 @@
+import logging
 import os
 from configparser import ConfigParser
 from typing import Optional
@@ -17,9 +18,18 @@ class ConfigHandler:
         self.gopher_output_dir = gopher_output_dir
         self.css_template_path = css_template_path
 
-        self._check_for_missing_args_in_env()
-        self._check_for_missing_args_in_config_file()
+        if not self._all_parameters_defined():
+            self._check_for_missing_args_in_env()
+        if not self._all_parameters_defined():
+            self._check_for_missing_args_in_config_file()
         self._final_arg_check()
+    
+    def _all_parameters_defined(self) -> bool:
+        return self.source_dir is not None and
+            self.html_output_dir is not None and
+            self.gemini_output_dir is not None and
+            self.gopher_output_dir is not None and
+            self.css_template_path is not None
     
     def _check_for_missing_args_in_env(self) -> None:
         if self.source_dir is None:
@@ -56,19 +66,19 @@ class ConfigHandler:
                 self.gopher_output_dir = config_file_values["DEFAULT"]["OMNIHOST_GOPHER_OUTPUT_DIR"]
             if self.css_template_path is None:
                 self.css_template_path = config_file_values["DEFAULT"]["OMNIHOST_CSS_TEMPLATE_PATH"]
-
-
+        else:
+            logging.info(f"No config file exists at {config_path}, cannot resolve missing parameters")
     
     def _final_arg_check(self) -> None
         if self.source_dir == "":
-            raise ArgumentException("Empty input dir path provided")
+            raise ConfigException("Empty input dir path provided")
         if not os.path.exists(self.source_dir):
-            raise ArgumentException(f"Gemtext input directory '{source_dir}' does not exist.")
+            raise ConfigException(f"Gemtext input directory '{source_dir}' does not exist.")
         if not os.listdir(self.source_dir):
-            raise ArgumentException(f"Gemtext input directory '{source_dir}' is empty.")
+            raise ConfigException(f"Gemtext input directory '{source_dir}' is empty.")
 
         if not self.html_output_dir and not self.gemini_output_dir and not self.gopher_output_dir:
-            raise ArgumentException("No HTML, gemini, or gopher output directories provided")
+            raise ConfigException("No HTML, gemini, or gopher output directories provided")
 
         self._check_output_dir(self.html_output_dir, "HTML output")
         self._check_output_dir(self.gemini_output_dir, "Gemtext output")
@@ -76,16 +86,16 @@ class ConfigHandler:
 
         if css_template_path is not None:
             if not os.path.exists(css_template_path):
-                raise ArgumentException(f"CSS template {css_template_path} does not exist.")
+                raise ConfigException(f"CSS template {css_template_path} does not exist.")
 
     def _check_output_dir(self, dir_path: Optional[str], dir_name: str) -> None:
         if dir_path is not None:
             if not os.path.exists(dir_path):
-                raise ArgumentException(f"{dir_name} directory '{dir_path}' does not exist.")
+                raise ConfigException(f"{dir_name} directory '{dir_path}' does not exist.")
             if os.listdir(dir_path):
-                raise ArgumentException(f"{dir_name} directory '{dir_path}' is not empty.")
+                raise ConfigException(f"{dir_name} directory '{dir_path}' is not empty.")
 
 
-class ArgumentException(Exception):
-    """Represents an error with an argument provided via CLI at runtime."""
+class ConfigException:
+    """Represents an error with a config parameter."""
     pass
