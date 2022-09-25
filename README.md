@@ -74,6 +74,26 @@ Arguments:
  * `-g` gopher output directory path. This argument is optional. At present nothing is done with this argument. Eventually, if a gopher output path is provided, gemtext files will be converted to gophermaps and placed in this directory. This directory must be empty.
  * `-s` stylesheet path. This argument is optional. If a stylesheet path is provided, the stylesheet will be copied to \<html/output/dir>/css/\<stylesheet> and linked to the html pages as css/\<stylesheet>
  
+ Because the typical workflow involves running the software with the same arguments every time, there are alternative methods to provide these parameters: environment variables and a config file.
+
+ Parameter sources have the following order of precedence: command line arguments, environment variables, config file values. This means that you can use the command line arguments to override your default values set in the config file or environment. You can override any number of values. If you have your default values configured already and just want to generate a copy of your site with a different stylesheet, you could run
+
+ ```
+  $ omnihost -s <stylesheet/path>
+ ```
+
+ #### Setting Default Parameters in a Config File
+
+ On macOS and linux, the config file should be stored at `~/.config/omnihost/config`
+
+ On windows, the config file should be stored at `%APPDATA%\Local\Omnihost\config.txt`
+
+ An example config file is provided as `example_config`. Copy this file to the correct path for your operating system and update the values within to your preferred default arguments.
+
+ #### Setting Default Parameters in Environment Variables
+ 
+ The ability to configure default parameters is provided mostly to make containerization easier. Environment variable names are the same as the config file parameters and can be found in `example_config`
+ 
  ## Roadmap
  
  This is roughly ordered by priority except for conversion of gemtext to gophermaps. That's listed first because it's the biggest piece of missing functionality, but I'm planning to shore up the html conversion before adding that in
@@ -87,6 +107,7 @@ Arguments:
     + stylesheets specified per page
     + titles that aren't dependent on the file name
     + metadata to support things like auto-generation of subject indexes for wikis
+  * Add command line argument to write provided args to a config file instead of requiring the user to set that up by hand
 
 ## License
 
