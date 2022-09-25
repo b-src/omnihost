@@ -1,4 +1,5 @@
 import os
+from configparser import ConfigParser
 from typing import Optional
 
 class ConfigHandler:
@@ -19,7 +20,7 @@ class ConfigHandler:
         self._check_for_missing_args_in_env()
         self._check_for_missing_args_in_config_file()
         self._final_arg_check()
-        
+    
     def _check_for_missing_args_in_env(self) -> None:
         if self.source_dir is None:
             self.source_dir = os.getenv("OMNIHOST_SOURCE_DIR")
@@ -31,9 +32,32 @@ class ConfigHandler:
             self.gopher_output_dir = os.getenv("OMNIHOST_GOPHER_OUTPUT_DIR")
         if self.css_template_path is None:
             self.css_template_path = os.getenv("OMNIHOST_CSS_TEMPLATE_PATH")
+            
+    def _get_config_file_path(self) -> str:
+        appdata_path = os.getenv('APPDATA')
+        if appdata_path:
+            return os.path.join(appdata_path, "Local", "Omnihost", "config.txt")
+        else:
+            home_path = os.path.expanduser("~")
+            return os.path.join(home_path, ".config", "omnihost", "config")
     
     def _check_for_missing_args_in_config_file(self) -> None:
-        pass
+        config_path = self._get_config_file_path()
+        if os.path.exists(config_path):
+            config_file_values = ConfigParser()
+            config_file_values.read(config_path)
+            if self.source_dir is None:
+                self.source_dir = config_file_values["DEFAULT"]["OMNIHOST_SOURCE_DIR"]
+            if self.html_output_dir is None:
+                self.html_output_dir = config_file_values["DEFAULT"]["OMNIHOST_HTML_OUTPUT_DIR"]
+            if self.gemini_output_dir is None:
+                self.gemini_output_dir = config_file_values["DEFAULT"]["OMNIHOST_GEMINI_OUTPUT_DIR"]
+            if self.gopher_output_dir is None:
+                self.gopher_output_dir = config_file_values["DEFAULT"]["OMNIHOST_GOPHER_OUTPUT_DIR"]
+            if self.css_template_path is None:
+                self.css_template_path = config_file_values["DEFAULT"]["OMNIHOST_CSS_TEMPLATE_PATH"]
+
+
     
     def _final_arg_check(self) -> None
         if self.source_dir == "":
