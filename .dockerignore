@@ -7,5 +7,6 @@ dist
 temp
 
 .env
+.env-list
 .python-version
 CHANGELOG.md
