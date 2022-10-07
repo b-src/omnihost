@@ -32,7 +32,7 @@ ENV OMNIHOST_SOURCE_DIR=null \
     OMNIHOST_HTML_OUTPUT_DIR=null \
     OMNIHOST_GEMINI_OUTPUT_DIR=null \
     OMNIHOST_GOPHER_OUTPUT_DIR=null \
-    OMNIHOST_CSS_TEMPLATE_PATH=null \
+    OMNIHOST_CSS_TEMPLATE_PATH=null
 
 COPY --from=build /home/appuser/app/requirements.txt .
 
@@ -41,5 +41,4 @@ RUN pip install --force-reinstall -r requirements.txt
 COPY entrypoint.sh .
 COPY omnihost omnihost
 
-ENTRYPOINT ["/bin/bash", "entrypoint.sh", "--"]
-CMD ["-h"]
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

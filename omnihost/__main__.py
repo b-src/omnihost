@@ -58,15 +58,17 @@ def main(argv: Optional[list[str]] = None) -> None:
 
     args = arg_parser.parse_args(argv)
 
-    config = ConfigHandler(
-        args.source_dir,
-        args.html_output_dir,
-        args.gemini_output_dir,
-        args.gopher_output_dir,
-        args.css_template_path,
-    )
-
+    config = None
+    
     try:
+        config = ConfigHandler(
+            args.source_dir,
+            args.html_output_dir,
+            args.gemini_output_dir,
+            args.gopher_output_dir,
+            args.css_template_path,
+        )
+
         omniconverter = OmniConverter(
             config.source_dir,
             config.html_output_dir,

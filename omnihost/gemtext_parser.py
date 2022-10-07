@@ -146,5 +146,4 @@ class GemtextParser:
 
 class GemtextParserException(Exception):
     """Represents errors that occur within the GemtextParser"""
-
     pass
