@@ -1,6 +1,6 @@
-# OMNIHOST
+# Omnihost
 
-A tool for those who would like to host native gemini content in parallel on the web as well as gopherspace.
+A static site generator for those who would like to host native gemini content in parallel on the web as well as gopherspace.
 
 ## Description
 
@@ -21,6 +21,8 @@ The current release has been manually tested on a linux machine. You should (pro
  * pip
  * [pyenv](https://github.com/pyenv/pyenv)
  * [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)
+
+Omnihost is also available as a docker image.
 
 ### Dependencies
 
@@ -55,6 +57,10 @@ Install omnihost in the virtual environment
  $ python3 -m pip install omnihost
 ```
 
+#### Using Docker
+
+If you would prefer using the docker image instead of installing via pip, see the Running with Docker section below.
+
 ### Running
 
 Activate your venv
@@ -67,6 +73,8 @@ Run omnihost
  $ omnihost -i <gemtext/source/dir> -w <html/output/dir> -o <gemtext/output/dir> -g <gopher/output/dir> -s <stylesheet/path>
 ```
 
+Because the typical workflow involves running the software with the same arguments every time, there are alternative methods to provide these parameters: environment variables and a config file. If an argument is listed as required below, that means that it is required to be set, not that it must be passed in through the command line.
+
 Arguments:
  * `-i` gemtext source directory path. This argument is required.
  * `-w` html output directory path. This argument is optional. If an html output path is provided, gemtext files will be converted to html and placed in this directory. This directory must be empty.
@@ -74,40 +82,52 @@ Arguments:
  * `-g` gopher output directory path. This argument is optional. At present nothing is done with this argument. Eventually, if a gopher output path is provided, gemtext files will be converted to gophermaps and placed in this directory. This directory must be empty.
  * `-s` stylesheet path. This argument is optional. If a stylesheet path is provided, the stylesheet will be copied to \<html/output/dir>/css/\<stylesheet> and linked to the html pages as css/\<stylesheet>
  
- Because the typical workflow involves running the software with the same arguments every time, there are alternative methods to provide these parameters: environment variables and a config file.
 
- Parameter sources have the following order of precedence: command line arguments, environment variables, config file values. This means that you can use the command line arguments to override your default values set in the config file or environment. You can override any number of values. If you have your default values configured already and just want to generate a copy of your site with a different stylesheet, you could run
+Parameter sources have the following order of precedence: command line arguments, environment variables, config file values. This means that you can use the command line arguments to override your default values set in the config file or environment. You can override any number of values. If you have your default values configured already and just want to generate a copy of your site with a different stylesheet, you could run
 
- ```
-  $ omnihost -s <stylesheet/path>
- ```
+```
+ $ omnihost -s <stylesheet/path>
+```
 
- #### Setting Default Parameters in a Config File
+#### Setting Default Parameters in a Config File
 
- On macOS and linux, the config file should be stored at `~/.config/omnihost/config`
+On macOS and linux, the config file should be stored at `~/.config/omnihost/config`
 
- On windows, the config file should be stored at `%APPDATA%\Local\Omnihost\config.txt`
+On windows, the config file should be stored at `%APPDATA%\Local\Omnihost\config.txt`
 
- An example config file is provided as `example_config`. Copy this file to the correct path for your operating system and update the values within to your preferred default arguments.
+An example config file is provided as `example_config`. Copy this file to the correct path for your operating system and update the values within to your preferred default arguments.
 
- #### Setting Default Parameters in Environment Variables
+#### Setting Default Parameters in Environment Variables
  
- The ability to configure default parameters is provided mostly to make containerization easier. Environment variable names are the same as the config file parameters and can be found in `example_config`
+The ability to configure default parameters is provided mostly to make containerization easier. Environment variable names are the same as the config file parameters and can be found in `example_config`
+
+### Running with Docker
+
+Pull the image
+
+```
+ $ docker pull omnihost
+```
+
+Run the image
+```
+TODO: add command
+```
  
- ## Roadmap
+## Roadmap
  
- This is roughly ordered by priority except for conversion of gemtext to gophermaps. That's listed first because it's the biggest piece of missing functionality, but I'm planning to shore up the html conversion before adding that in
+This is roughly ordered by priority except for conversion of gemtext to gophermaps. That's listed first because it's the biggest piece of missing functionality, but I'm planning to shore up the html conversion before adding that in
  
-  * Add ability to convert gemtext to gophermaps
-  * Add automated tests
-  * Add support for nested directory structures for both input and output instead of requiring all input files to be in the top level of the input directory
-  * Add ability to insert header/footer on output gemtext files to support things like links back to the home page and copyright or license notices
-  * Improve formatting of html output to make it nicely human-readable
-  * Consider adding a preprocessing step using something like mdbook to allow for for meta control of generated pages. Would allow for things like:
-    + stylesheets specified per page
-    + titles that aren't dependent on the file name
-    + metadata to support things like auto-generation of subject indexes for wikis
-  * Add command line argument to write provided args to a config file instead of requiring the user to set that up by hand
+ * Add ability to convert gemtext to gophermaps
+ * Add automated tests
+ * Add support for nested directory structures for both input and output instead of requiring all input files to be in the top level of the input directory
+ * Add ability to insert header/footer on output gemtext files to support things like links back to the home page and copyright or license notices
+ * Improve formatting of html output to make it nicely human-readable
+ * Consider adding a preprocessing step using something like mdbook to allow for for meta control of generated pages. Would allow for things like:
+   + stylesheets specified per page
+   + titles that aren't dependent on the file name
+   + metadata to support things like auto-generation of subject indexes for wikis
+ * Add command line argument to write provided args to a config file instead of requiring the user to set that up by hand
 
 ## License
 

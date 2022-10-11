@@ -1,0 +1,6 @@
+[DEFAULT]
+OMNIHOST_SOURCE_DIR = /absolute/path/to/gemfile/source/dir
+OMNIHOST_HTML_OUTPUT_DIR = /absolute/path/to/html/output/dir
+OMNIHOST_GEMINI_OUTPUT_DIR = /absolute/path/to/gemini/output/dir
+OMNIHOST_GOPHER_OUTPUT_DIR = /absolute/path/to/gopher/output/dir
+OMNIHOST_CSS_TEMPLATE_PATH = /absolute/path/to/css/template/file
