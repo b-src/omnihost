@@ -1,5 +1,6 @@
 import logging
 from enum import auto, Enum
+from html import escape
 from typing import Optional
 
 from omnihost.gemtext_parser import GemLine, LineType
@@ -24,24 +25,24 @@ class HTMLConverter:
             if self._state == HTMLConverterState.DEFAULT:
                 if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
                     html_body += self._start_preformatted_line(
-                        alt_text=gemline.line_contents
+                        alt_text=html.escape(gemline.line_contents)
                     )
 
                 elif gemline.line_type == LineType.PREFORMATTED:
                     html_body += self._start_preformatted_line(
-                        content=gemline.line_contents
+                        content=escape(gemline.line_contents)
                     )
 
                 elif gemline.line_type == LineType.LISTITEM:
                     self._state = HTMLConverterState.LIST
-                    html_body += f"<ul><li>{gemline.line_contents}</li>"
+                    html_body += f"<ul><li>{escape(gemline.line_contents)}</li>"
 
                 else:
                     html_body += self._convert_default_gemline_to_html(gemline)
 
             elif self._state == HTMLConverterState.PREFORMATTED:
                 if gemline.line_type == LineType.PREFORMATTED:
-                    html_body += f"\n{gemline.line_contents}"
+                    html_body += f"\n{escape(gemline.line_contents)}"
 
                 elif gemline.line_type == LineType.END_PREFORMATTED:
                     self._state = HTMLConverterState.DEFAULT
@@ -49,7 +50,7 @@ class HTMLConverter:
 
             elif self._state == HTMLConverterState.LIST:
                 if gemline.line_type == LineType.LISTITEM:
-                    html_body += f"<li>{gemline.line_contents}</li>"
+                    html_body += f"<li>{escape(gemline.line_contents)}</li>"
                 else:
                     html_body += "</ul>"
 
@@ -57,10 +58,10 @@ class HTMLConverter:
                     # separate END_LIST line in the gemline list
 
                     if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
-                        self._start_preformatted_line(alt_text=gemline.line_contents)
+                        self._start_preformatted_line(alt_text=escape(gemline.line_contents))
 
                     elif gemline.line_type == LineType.PREFORMATTED:
-                        self._start_preformatted_line(content=gemline.line_contents)
+                        self._start_preformatted_line(content=escape(gemline.line_contents))
 
                     else:
                         self._state = HTMLConverterState.DEFAULT
@@ -94,13 +95,13 @@ class HTMLConverter:
     def _convert_default_gemline_to_html(self, gemline: GemLine) -> str:
         match gemline.line_type:
             case LineType.TEXT:
-                return f"<p>{gemline.line_contents}</p>"
+                return f"<p>{escape(gemline.line_contents)}</p>"
             case LineType.HEADING:
-                return f"<h1>{gemline.line_contents}</h1>"
+                return f"<h1>{escape(gemline.line_contents)}</h1>"
             case LineType.SUBHEADING:
-                return f"<h2>{gemline.line_contents}</h2>"
+                return f"<h2>{escape(gemline.line_contents)}</h2>"
             case LineType.SUBSUBHEADING:
-                return f"<h3>{gemline.line_contents}</h3>"
+                return f"<h3>{escape(gemline.line_contents)}</h3>"
             case LineType.LINK:
                 return self._convert_link_to_html(gemline)
             case LineType.BLOCKQUOTE:
@@ -149,7 +150,7 @@ class HTMLConverter:
     def _convert_block_quote_to_html(self, gemline: GemLine) -> str:
         """Handle a variable amount of whitespace at the start of a quote line."""
         quote_content = gemline.line_contents.strip()
-        return f"<p>&gt; {quote_content}</p>"
+        return f"<p>&gt; {escape(quote_content)}</p>"
 
     def _add_page_content_to_html_template(
         self, title: str, body: str, stylesheet: Optional[str]
