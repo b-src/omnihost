@@ -10,7 +10,13 @@ ENV PYTHONFAULTHANDLER=1
 RUN useradd --create-home appuser
 USER appuser
 
-RUN mkdir /home/appuser/app
+RUN mkdir /home/appuser/app \
+    /home/appuser/source \
+    /home/appuser/stylesheet_source \
+    /home/appuser/html_output \
+    /home/appuser/gemini_output \
+    /home/appuser/gopher_output
+
 WORKDIR /home/appuser/app
 
 FROM base as build

@@ -20,3 +20,6 @@ env.list
 # temp test files
 test/temp/
 test/test_manual.py
+
+# docker run script
+run_dockerfile.sh
