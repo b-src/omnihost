@@ -25,7 +25,7 @@ class HTMLConverter:
             if self._state == HTMLConverterState.DEFAULT:
                 if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
                     html_body += self._start_preformatted_line(
-                        alt_text=html.escape(gemline.line_contents)
+                        alt_text=escape(gemline.line_contents)
                     )
 
                 elif gemline.line_type == LineType.PREFORMATTED:
