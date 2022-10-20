@@ -28,45 +28,21 @@ Omnihost is also available as a docker image.
 
 python v3.10.5 or newer
 
-Instructions in the Installing section assume you are using `pyenv` and `pyenv-virtualenv`
+OR
+
+docker
 
 ### Installing
 
 Omnihost can be installed from the python package index via pip ([pypi](https://pypi.org/project/omnihost))
 
-As omnihost currently has no dependencies outside of the python standard library, you should be alright installing it in your global python environment if your system python is new enough. Best practice would be to install it in a virtual environment.
-
-Install python v3.10.5 with `pyenv` if your system python uses a different version
 ```
- $ pyenv install 3.10.5
+ $ pip install omnihost
 ```
-
-Create a virtual environment using `pyenv-virtualenv`
-```
- $ pyenv virtualenv 3.10.5 omnihost
-```
-
-
-Activate the venv
-```
- $ pyenv activate omnihost
-```
-
-Install omnihost in the virtual environment
-```
- $ python3 -m pip install omnihost
-```
-
-#### Using Docker
 
 If you would prefer using the docker image instead of installing via pip, see the Running with Docker section below.
 
 ### Running
-
-Activate your venv
-```
- $ pyenv activate omnihost
-```
 
 Run omnihost
 ```
@@ -109,9 +85,27 @@ Pull the image
  $ docker pull omnihost
 ```
 
-Run the image
+Run the image substitute the values in <> with your local paths.
 ```
-TODO: add command
+docker run \
+    -v <absolute/local/path/to/source/dir>:/home/appuser/gemini_source \
+    -v <absolute/local/path/to/css/dir>:/home/appuser/stylesheet_source \
+    -v <absolute/local/path/to/html/output/dir>:/home/appuser/html_output \
+    -v <absolute/local/path/to/gemini/output/dir>:/home/appuser/gemini_output \
+    -v <absolute/local/path/to/gopher/output/dir>:/home/appuser/gopher_output \
+    -e OMNIHOST_SOURCE_DIR="/home/appuser/gemini_source" \
+    -e OMNIHOST_CSS_TEMPLATE_PATH="/home/appuser/stylesheet_source/styles.css" \
+    -e OMNIHOST_HTML_OUTPUT_DIR="/home/appuser/html_output" \
+    -e OMNIHOST_GEMINI_OUTPUT_DIR="/home/appuser/gemini_output" \
+    -e OMNIHOST_GOPHER_OUTPUT_DIR="/home/appuser/gopher_output" \
+    omnihost:latest
+```
+
+This command mounts your local input and output paths to the container, and sets the environment variables appropriately.
+
+This is an awful lot to type every time. The above command is provided in bash script form as `run_dockerfile_example.sh`. Download this file, rename it to `run_omnihost.sh`, and update the values in <> with your local paths. Now you just have to run:
+```
+./run_omnihost.sh
 ```
  
 ## Roadmap

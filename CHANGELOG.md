@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased]
-### Changed
- - Containerize script
+### Added
+ - Containerize omnihost
+ - Add an example bash script to make running the containerized script more convenient
  - Add support for env variables or a config file instead of requiring file paths to be passed on the command line every single time
+
+### Fixes
+ - Properly escape special characters in html output
 
 ## [0.3.0] - 2022-09-17
 
