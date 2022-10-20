@@ -11,7 +11,7 @@ RUN useradd --create-home appuser
 USER appuser
 
 RUN mkdir /home/appuser/app \
-    /home/appuser/source \
+    /home/appuser/gemini_source \
     /home/appuser/stylesheet_source \
     /home/appuser/html_output \
     /home/appuser/gemini_output \
