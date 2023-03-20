@@ -7,10 +7,8 @@ RUN apt-get update && \
 
 ENV PYTHONFAULTHANDLER=1
 
-RUN useradd --create-home appuser
-USER appuser
-
-RUN mkdir /home/appuser/app \
+RUN mkdir /home/appuser \
+    /home/appuser/app \
     /home/appuser/gemini_source \
     /home/appuser/stylesheet_source \
     /home/appuser/html_output \
