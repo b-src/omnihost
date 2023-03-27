@@ -75,26 +75,31 @@ class GopherConverter:
 
     def convert_gemlines_to_gopher(self, gemlines: list[GemLine], title: str) -> str:
         for gemline in gemlines:
-            if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
-                pass
-            elif gemline.line_type == LineType.PREFORMATTED:
-                pass
-            elif gemline.line_type == LineType.END_PREFORMATTED:
-                pass
-            elif gemline.line_type == LineType.LISTITEM:
-                pass
-            elif gemline.line_type == LineType.TEXT:
-                pass
-            elif gemline.line_type == LineType.HEADING:
-                pass
-            elif gemline.line_type == LineType.SUBHEADING:
-                pass
-            elif gemline.line_type == LineType.SUBSUBHEADING:
-                pass
-            elif gemline.line_type == LineType.LINK:
-                pass
-            elif gemline.line_type == LineType.BLOCKQUOTE:
-                pass
+            match gemline.line_type:
+                case LineType.PREFORMATTED_ALT_TEXT:
+                    # Do nothing, gopher doesn't support an alt-text equivalent (TODO: confirm)
+                    pass
+                case LineType.PREFORMATTED:
+                    return f"{_gopher_character_map[GopherType.TEXT]}{gemline.line_contents}"
+                case LineType.END_PREFORMATTED:
+                    # Do nothing, gopher doesn't support an alt-text equivalent (TODO: confirm)
+                    pass
+                case LineType.LISTITEM:
+                    return f"{_gopher_character_map[GopherType.TEXT]} * {gemline.line_contents}"
+                case LineType.TEXT:
+                    return f"{_gopher_character_map[GopherType.TEXT]}{gemline.line_contents}"
+                case LineType.HEADING:
+                    return f"{_gopher_character_map[GopherType.TEXT]}{gemline.line_contents}"
+                case LineType.SUBHEADING:
+                    return f"{_gopher_character_map[GopherType.TEXT]}{gemline.line_contents}"
+                case LineType.SUBSUBHEADING:
+                    return f"{_gopher_character_map[GopherType.TEXT]}{gemline.line_contents}"
+                case LineType.LINK:
+                    pass
+                case LineType.BLOCKQUOTE:
+                    return f"{_gopher_character_map[GopherType.TEXT]} > {gemline.line_contents}"
+                case _:
+                    raise GopherConverterException(f"Cannot convert invalid line type to gopher: {gemline.line_type}")
 
 
 class GopherConverterException(Exception):
