@@ -35,3 +35,34 @@ class GopherType(Enum):
     PDF = auto()
     XML = auto()
 
+
+_gopher_character_map = {
+    GopherType.TEXT: "0",
+    GopherType.SUBMENU: "1",
+    GopherType.CCSO_NAMESERVER: "2",
+    GopherType.ERROR_CODE: "3",
+    GopherType.BINHEX: "4",
+    GopherType.DOS: "5",
+    GopherType.UUENCODED_FILE: "6",
+    GopherType.FULL_TEXT_SEARCH: "7",
+    GopherType.TELNET: "8",
+    GopherType.BINARY: "9",
+    GopherType.MIRROR: "+",
+    GopherType.GIF: "g",
+    GopherType.CANONICAL_IMAGE: "I",
+    GopherType.TELNET_3270: "T",
+    # Gopher+ Types:
+    GopherType.BITMAP: ":",
+    GopherType.MOVIE: ";",
+    GopherType.GOPHER_PLUS_SOUND: "<",
+    # Non-canonical Types:
+    GopherType.DOC: "d",
+    GopherType.HTML: "h",
+    GopherType.INFO: "i",
+    GopherType.NON_CANONICAL_IMAGE: "p",
+    GopherType.RTF: "r",
+    GopherType.NON_CANONICAL_SOUND: "s",
+    GopherType.PDF: "P",
+    GopherType.XML: "X",
+}
+
