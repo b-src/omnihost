@@ -9,6 +9,7 @@ dist/
 
 # venv
 .python-version
+pyrightconfig.json
 
 # environment variables
 .env
