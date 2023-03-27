@@ -1,5 +1,7 @@
 from enum import auto, Enum
 
+from omnihost.gemtext_parser import GemLine, LineType
+
 
 class GopherType(Enum):
     # Canonical Types
@@ -65,4 +67,37 @@ _gopher_character_map = {
     GopherType.PDF: "P",
     GopherType.XML: "X",
 }
+
+
+class GopherConverter:
+    def __init__(self) -> None:
+        pass
+
+    def convert_gemlines_to_gopher(self, gemlines: list[GemLine], title: str) -> str:
+        for gemline in gemlines:
+            if gemline.line_type == LineType.PREFORMATTED_ALT_TEXT:
+                pass
+            elif gemline.line_type == LineType.PREFORMATTED:
+                pass
+            elif gemline.line_type == LineType.END_PREFORMATTED:
+                pass
+            elif gemline.line_type == LineType.LISTITEM:
+                pass
+            elif gemline.line_type == LineType.TEXT:
+                pass
+            elif gemline.line_type == LineType.HEADING:
+                pass
+            elif gemline.line_type == LineType.SUBHEADING:
+                pass
+            elif gemline.line_type == LineType.SUBSUBHEADING:
+                pass
+            elif gemline.line_type == LineType.LINK:
+                pass
+            elif gemline.line_type == LineType.BLOCKQUOTE:
+                pass
+
+
+class GopherConverterException(Exception):
+    """Represents errors that occur within the GopherConverter."""
+    pass
 
