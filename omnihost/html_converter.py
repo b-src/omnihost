@@ -130,6 +130,8 @@ class HTMLConverter:
         Requires that internal links are using relative rather than absolute URLs
         TODO: is there a better way to handle this? are there additional edge cases not
         accounted for?
+        TODO: much of the logic in this and _convert_link_to_html is duplicated in the GopherConverter
+        Take that into account for any refactoring
         """
         if "://" in original_link:
             # Absolute URL

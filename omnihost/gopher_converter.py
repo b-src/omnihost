@@ -95,12 +95,39 @@ class GopherConverter:
                 case LineType.SUBSUBHEADING:
                     return f"{_gopher_character_map[GopherType.TEXT]}{gemline.line_contents}"
                 case LineType.LINK:
-                    pass
+                    return _convert_link_to_gopher(gemline)
                 case LineType.BLOCKQUOTE:
                     return f"{_gopher_character_map[GopherType.TEXT]} > {gemline.line_contents}"
                 case _:
                     raise GopherConverterException(f"Cannot convert invalid line type to gopher: {gemline.line_type}")
 
+    def _convert_link_to_gopher(self, gemline: GemLine) -> str:
+        # TODO: much of this logic is duplicated in the HTMLConverter
+        content = gemline.line_contents.strip().split()
+        if len(content) == 0:
+            raise GopherConverterException("Empty link line")
+        else:
+            original_url = content[0]
+            link = original_url
+            if "://" in original_url:
+                # Absolute URL
+                pass
+            # This case probably doesn't need to be handled specially since AFAIK '.gmi' is
+            # not a valid top level domain
+            elif original_url.startswith("mailto:"):
+                # Absolute URL
+                pass
+            else:
+                # Relative link to gemini page
+                if original_url.endswith(".gmi"):
+                    # TODO: I don't think this is right
+                    link = f"{original_url[:-4]}.gopher"
+                # Relative link to something else
+                else:
+                    pass
+
+            # TODO: attempt to parse file type from url
+            return f"{link}"
 
 class GopherConverterException(Exception):
     """Represents errors that occur within the GopherConverter."""
